@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .board{
+            border: 5px solid #dcdcdc;
+            width: max-content;
+            margin: 2rem;
+        }
+       .board{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+       }
+.row{
+    display: flex;
+    flex-direction: row;
+}
+        .square{
+           height: 75px;
+           width: 75px;
+        }
+    </style>
+</head>
+<body>
+    <div class="board"></div>
+    <script type="text/javascript">
+        /* create 8*8 board */
+        const board = document.querySelector('.board');
+        for(let i=0; i<8; i++){
+            const row = document.createElement('div');
+            row.classList.add('row');
+            for(let j=0; j<8; j++){
+                const square = document.createElement('div');
+                square.classList.add('square');
+                if((i+j)%2==0){
+                    square.style.backgroundColor = 'black';
+                }
+                else{
+                    square.style.backgroundColor = 'white';
+                }
+                row.appendChild(square);
+            }
+            board.appendChild(row);
+        }
+        /* place queens */
+        const queens = document.querySelectorAll('.square');
+        for(let i=0; i<8; i++){
+            queens[i].style.backgroundColor = 'red';
+        }
+        /* solve n queens problem */
+        function solveNQueens(n){
+            const board = [];
+            for(let i=0; i<n; i++){
+                board.push([]);
+                for(let j=0; j<n; j++){
+                    board[i].push(0);
+                }
+            }
+            if(solveNQueensUtil(board, 0)){
+                return board;
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
