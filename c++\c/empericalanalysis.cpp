@@ -1,17 +1,22 @@
-#include <stdio.h>
 
+/* Analysis of Diffrent sorting algorithms */
+
+#include <stdio.h>
 #include <sys/time.h>
 #include <math.h>
 #include <stdlib.h>
 //void display(int*, int);
 void bubblesort(int*, int);
-void insertionsort(int*, int);
+//void insertionsort(int*, int);
 void init(int*,int);
 void listcopy(int*,int*,int);
 void merge(int*,int,int,int);
 void mergesort(int*,int,int);
+
+void quicksort(int*,int,int);
+int partition(int *,int,int);
 int main()
-{
+{ 
     int *A, *B, n;
     struct timeval start, stop;
     double secs = 0;
@@ -30,14 +35,20 @@ int main()
     secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
     printf("time taken by bubblesort %lf\n",secs);
  
+    // listcopy(A,B,n);
+    // gettimeofday(&start, NULL);
+    // insertionsort(A,n);
+    // gettimeofday(&stop, NULL);
+    // printf("\nList after insertionsort:\n");
+    // //display(A,n);
+    // secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
+
     listcopy(A,B,n);
-    gettimeofday(&start, NULL);
-    insertionsort(A,n);
-    gettimeofday(&stop, NULL);
-    printf("\nList after insertionsort:\n");
-    //display(A,n);
+     gettimeofday(&start, NULL);
+    quicksort(A,0,n-1);
+     gettimeofday(&stop, NULL);
     secs = (double)(stop.tv_usec - start.tv_usec) / 1000000 + (double)(stop.tv_sec - start.tv_sec);
-    printf("time taken by insertionsort %lf\n",secs);
+    printf("time taken by quicksort%lf\n",secs);
     listcopy(A,B,n);
     gettimeofday(&start, NULL);
     mergesort(A,0,n-1);
@@ -64,21 +75,21 @@ void bubblesort(int *A, int n)
         }
     }
 }
-void insertionsort(int *A, int n)
-{
-    int i,j,tmp;
-    for(i=1;i<n;i++)
-    {
-        tmp=A[i];
-        j=i-1;
-        while(j>=0&&A[j]>tmp)
-        {
-                A[j+1]=A[j];
-                j--;
-        }
-        A[j+1] = tmp;
-    }
-}
+// void insertionsort(int *A, int n)
+// {
+//     int i,j,tmp;
+//     for(i=1;i<n;i++)
+//     {
+//         tmp=A[i];
+//         j=i-1;
+//         while(j>=0&&A[j]>tmp)
+//         {
+//                 A[j+1]=A[j];
+//                 j--;
+//         }
+//         A[j+1] = tmp;
+//     }
+// }
 void mergesort(int* A, int l, int u)
 {
     int mid;
@@ -148,3 +159,36 @@ void init(int* A, int n)
 //     }
 //     printf("\n\n");
 // }
+
+
+ void quicksort(int* a,int l,int u){
+        int j;
+        if(l<u){
+            j=partition(a,l,u);
+            quicksort(a,l,j-1);
+            quicksort(a,j+1,u);
+        }
+    }
+    int partition(int* a,int l,int u){
+        int v,i,j,temp;
+        v=a[l];
+        i=l;
+        j=u+1;
+        do{
+            do
+                i++;
+            while(a[i]<v&&i<=u);
+            do
+                j--;
+            while(v<a[j]);
+            if(i<j){
+                temp=a[i];
+                a[i]=a[j];
+                a[j]=temp;
+            }
+        }while(i<j);
+        a[l]=a[j];
+        a[j]=v;
+        return(j);
+    }
+
